@@ -1,0 +1,40 @@
+#!/bin/sh
+#个人修改版过的redis启动和关闭的脚本，原版的不可用,启动和停止的命令分别为service redis start 和service redis stop
+
+REDISPORT=6379
+EXEC=/usr/local/redis/src/redis-server
+CLIEXEC=/usr/local/redis/src/redis-cli
+
+CONF="/etc/redis/redis.conf"
+
+case "$1" in
+    start)
+                $EXEC $CONF &> /dev/null
+		while true
+		do
+			ss -antpl |grep redis &> /dev/null
+			if [ $? -eq 0 ];then
+				echo "redis started"
+				break
+			fi
+		done
+		
+        ;;
+    stop)
+                $CLIEXEC  -p $REDISPORT shutdown
+		while true
+	        do
+			ss -antpl | grep redis &> /dev/null
+			if [ $? -eq 0 ];then
+               			        echo "Waiting for Redis to shutdown ..."
+                        	                        sleep 1
+			else
+                		         echo "Redis stopped"
+			         break
+			fi
+                done
+        ;;
+    *)
+   	     echo "Please use start or stop as first argument"
+       	     ;;
+esac
