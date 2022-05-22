@@ -1,6 +1,6 @@
 #!/bin/sh
 #个人修改版过的redis启动和关闭的脚本，原版的不可用,启动和停止的命令分别为service redis start 和service redis stop
-
+#适用于编译安装的redis
 REDISPORT=6379
 EXEC=/usr/local/redis/src/redis-server
 CLIEXEC=/usr/local/redis/src/redis-cli
